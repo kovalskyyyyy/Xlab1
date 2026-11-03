@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class teamArena : MonoBehaviour
 {
-    private List<Unit> m_heroes = new List<Unit>();
-    private List<Unit> m_enemies = new List<Unit>();
+    private List<Unit> heroes = new List<Unit>();
+    private List<Unit> enemies = new List<Unit>();
     
-    private List<Weapon> m_droppedWeaponsPool = new List<Weapon>();
+    private List<Weapon> droppedWeaponsPool = new List<Weapon>();
 
     private void Awake()
     {
@@ -25,13 +25,13 @@ public class teamArena : MonoBehaviour
         Weapon rustyDagger = new Weapon("Ржавый кинжал", 15, Element.None, 1);
         Weapon legendaryAxe = new Weapon("Топор Кровавой Луны", 45, Element.Fire, 10);
 
-        m_heroes.Add(new Unit("Рыцарь Артур", 120, 15, Element.None, fireSword));
-        m_heroes.Add(new Unit("Маг Джайна", 80, 5, Element.Ice, iceStaff));
-        m_heroes.Add(new Unit("Вор Робин", 90, 8, Element.Fire, rustyDagger));
+        heroes.Add(new Unit("Рыцарь Артур", 120, 15, Element.None, fireSword));
+        heroes.Add(new Unit("Маг Джайна", 80, 5, Element.Ice, iceStaff));
+        heroes.Add(new Unit("Вор Робин", 90, 8, Element.Fire, rustyDagger));
 
-        m_enemies.Add(new Unit("Орк-Вождь", 150, 12, Element.Fire, legendaryAxe));
-        m_enemies.Add(new Unit("Гоблин-Плут", 60, 4, Element.None, rustyDagger));
-        m_enemies.Add(new Unit("Ледяной Тролль", 130, 10, Element.Ice, iceStaff));
+        enemies.Add(new Unit("Орк-Вождь", 150, 12, Element.Fire, legendaryAxe));
+        enemies.Add(new Unit("Гоблин-Плут", 60, 4, Element.None, rustyDagger));
+        enemies.Add(new Unit("Ледяной Тролль", 130, 10, Element.Ice, iceStaff));
     }
 
     private void ExecuteTeamBattle()
@@ -39,23 +39,23 @@ public class teamArena : MonoBehaviour
         Debug.Log("НАЧАЛО КОМАНДНОГО СРАЖЕНИЯ");
         int round = 1;
 
-        while (IsTeamAlive(m_heroes) && IsTeamAlive(m_enemies) && round <= 50)
+        while (IsTeamAlive(heroes) && IsTeamAlive(enemies) && round <= 50)
         {
             Debug.Log($"\n РАУНД {round}");
 
-            ExecuteTeamTurn(m_heroes, m_enemies);
+            ExecuteTeamTurn(heroes, enemies);
 
-            if (!IsTeamAlive(m_enemies)) break;
+            if (!IsTeamAlive(enemies)) break;
 
-            ExecuteTeamTurn(m_enemies, m_heroes);
+            ExecuteTeamTurn(enemies, heroes);
 
             round++;
         }
 
         Debug.Log("\nБОЙ ЗАВЕРШЕН");
-        if (IsTeamAlive(m_heroes) && !IsTeamAlive(m_enemies))
+        if (IsTeamAlive(heroes) && !IsTeamAlive(enemies))
             Debug.Log("<color=green>Победа команды Героев!</color>");
-        else if (!IsTeamAlive(m_heroes) && IsTeamAlive(m_enemies))
+        else if (!IsTeamAlive(heroes) && IsTeamAlive(enemies))
             Debug.Log("<color=red>Поражение! Команда Противников победила.</color>");
         else
             Debug.Log("Ничья! Никого не осталось в живых.");
@@ -83,7 +83,7 @@ public class teamArena : MonoBehaviour
                 if (target.CurrentWeapon != null)
                 {
                     Debug.Log($"   [СОБЫТИЕ] Оружие «{target.CurrentWeapon.Name}» падает на землю.");
-                    m_droppedWeaponsPool.Add(target.CurrentWeapon);
+                    droppedWeaponsPool.Add(target.CurrentWeapon);
                 }
             }
         }
@@ -91,14 +91,14 @@ public class teamArena : MonoBehaviour
 
     private void TryTeamPickUp(Unit unit)
     {
-        if (m_droppedWeaponsPool.Count == 0) return;
+        if (droppedWeaponsPool.Count == 0) return;
 
-        for (int i = m_droppedWeaponsPool.Count - 1; i >= 0; i--)
+        for (int i = droppedWeaponsPool.Count - 1; i >= 0; i--)
         {
-            Weapon groundWeapon = m_droppedWeaponsPool[i];
+            Weapon groundWeapon = droppedWeaponsPool[i];
             if (unit.TryPickUpWeapon(groundWeapon))
             {
-                m_droppedWeaponsPool.RemoveAt(i);
+                droppedWeaponsPool.RemoveAt(i);
                 break; 
             }
         }

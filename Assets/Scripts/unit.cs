@@ -9,8 +9,8 @@ public class Unit
     public Weapon CurrentWeapon { get; private set; }
     public float CritChance { get; private set; }
 
-    private int m_minDamage;
-    private int m_maxDamage;
+    private int minDamage;
+    private int maxDamage;
 
     public bool IsAlive => Health > 0;
 
@@ -25,23 +25,23 @@ public class Unit
     }
 
 
-    public Unit(string name, int maxHealth, int mMinDamage, int mMaxDamage)
+    public Unit(string name, int maxHealth, int minDamage, int maxDamage)
     {
         Name = name;
         Health = maxHealth;
-        this.m_minDamage = mMinDamage;
-        this.m_maxDamage = mMaxDamage;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
         
         Armor = 0; 
         TargetElement = Element.None;
         CritChance = 0f; 
-        CurrentWeapon = new Weapon("Кулаки", mMinDamage, Element.None, 0); 
+        CurrentWeapon = new Weapon("Кулаки", minDamage, Element.None, 0); 
     }
 
     public int GetRandomDamage()
     {
         if (CurrentWeapon != null) return CurrentWeapon.BaseDamage; 
-        return Random.Range(m_minDamage, m_maxDamage + 1);
+        return Random.Range(minDamage, maxDamage + 1);
     }
 
     public int CalculateDamageTo(Unit target, out string logDetails)
