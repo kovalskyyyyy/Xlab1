@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public enum Element { None, Fire, Ice }
 
 public class Weapon

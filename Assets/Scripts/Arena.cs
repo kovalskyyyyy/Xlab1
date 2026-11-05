@@ -27,15 +27,9 @@ public class Arena : MonoBehaviour
         int randomEnemyType = Random.Range(0, 3);
         switch (randomEnemyType)
         {
-            case 0:
-                enemy = new Unit("Гоблин", 50, 4, 8);
-                break;
-            case 1:
-                enemy = new Unit("Орк", 80, 5, 10);
-                break;
-            case 2:
-                enemy = new Unit("Тролль", 140, 8, 12);
-                break;
+            case 0: enemy = new Unit("Гоблин", 50, 4, 8); break;
+            case 1: enemy = new Unit("Орк", 80, 5, 10); break;
+            case 2: enemy = new Unit("Тролль", 140, 8, 12); break;
         }
     }
 
@@ -54,17 +48,15 @@ public class Arena : MonoBehaviour
         {
             string roundLog = $"Раунд {currentRound}: ";
 
-            // --- ХОД ГЕРОЯ ---
-            int heroDamage = hero.GetRandomDamage();
+            int heroDamage = DamageCalc.FinalDamage(hero, enemy, out string heroDetails);
             enemy.TakeDamage(heroDamage);
-            roundLog += $"{hero.Name} наносит {heroDamage}, у {enemy.Name.ToLower()}а {enemy.Health} HP; ";
+            roundLog += $"{hero.Name} наносит {heroDamage} ({heroDetails}), у {enemy.Name.ToLower()}а {enemy.Health} HP; ";
 
-            // --- ХОД ВРАГА (только если он выжил) ---
             if (enemy.IsAlive)
             {
-                int enemyDamage = enemy.GetRandomDamage();
+                int enemyDamage = DamageCalc.FinalDamage(enemy, hero, out string enemyDetails);
                 hero.TakeDamage(enemyDamage);
-                roundLog += $"{enemy.Name} наносит {enemyDamage}, у {hero.Name.ToLower()}а {hero.Health} HP";
+                roundLog += $"{enemy.Name} наносит {enemyDamage} ({enemyDetails}), у {hero.Name.ToLower()}а {hero.Health} HP";
             }
             else
             {
