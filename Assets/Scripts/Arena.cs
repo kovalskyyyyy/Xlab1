@@ -27,9 +27,21 @@ public class Arena : MonoBehaviour
         int randomEnemyType = Random.Range(0, 3);
         switch (randomEnemyType)
         {
-            case 0: enemy = new Unit("Гоблин", 50, 4, 8); break;
-            case 1: enemy = new Unit("Орк", 80, 5, 10); break;
-            case 2: enemy = new Unit("Тролль", 140, 8, 12); break;
+            case 0:
+            {
+                enemy = new Unit("Гоблин", 50, 4, 8);
+                break;
+            }
+            case 1:
+            {
+                enemy = new Unit("Орк", 80, 5, 10);
+                break;
+            }
+            case 2:
+            {
+                enemy = new Unit("Тролль", 140, 8, 12);
+                break;
+            }
         }
     }
 
